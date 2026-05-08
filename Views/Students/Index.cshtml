@@ -1,0 +1,52 @@
+<!-- Views/Students/Index.cshtml -->
+@model IEnumerable<Student>
+
+<div class="d-flex justify-content-between mb-3">
+    <h2>Students</h2>
+    <a asp-action="Create" class="btn btn-primary">+ Add Student</a>
+</div>
+
+<form method="get" class="d-flex gap-2 mb-3">
+    <input name="search" value="@ViewBag.Search" class="form-control" placeholder="Search..." />
+    <select name="courseId" class="form-select" style="width:200px">
+        <option value="">All Courses</option>
+        @foreach (var c in ViewBag.Courses)
+        {
+            <option value="@c.Id">@c.Name</option>
+        }
+    </select>
+    <button class="btn btn-secondary">Filter</button>
+</form>
+
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Admission No.</th>
+            <th>Name</th>
+            <th>Course</th>
+            <th>Email</th>
+            <th>Enrolled</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td><code>@s.AdmissionNumber</code></td>
+                <td>@s.FirstName @s.LastName</td>
+                <td>@s.Course?.Name</td>
+                <td>@s.Email</td>
+                <td>@s.EnrollmentDate.ToString("dd MMM yyyy")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@s.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a asp-action="Details" asp-route-id="@s.Id" class="btn btn-sm btn-outline-info">View</a>
+                    <form asp-action="Delete" asp-route-id="@s.Id" method="post" style="display:inline"
+                          onsubmit="return confirm('Delete this student?')">
+                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

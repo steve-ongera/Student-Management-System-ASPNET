@@ -1,16 +1,57 @@
-// Models/Student.cs
-public class Student
+using System.ComponentModel.DataAnnotations;
+
+namespace StudentManagement.Models
 {
-    public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Email { get; set; }
-    public string PhoneNumber { get; set; }
-    public DateTime DateOfBirth { get; set; }
-    public string AdmissionNumber { get; set; }
-    public DateTime EnrollmentDate { get; set; }
-    public int CourseId { get; set; }
-    public Course Course { get; set; }
-    public ICollection<Enrollment> Enrollments { get; set; }
-    public ICollection<Grade> Grades { get; set; }
+    public class Student
+    {
+        public int Id { get; set; }
+
+        [Required, MaxLength(100)]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Required, MaxLength(100)]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; } = string.Empty;
+
+        [Required, EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [Phone, Display(Name = "Phone Number")]
+        public string? PhoneNumber { get; set; }
+
+        [Display(Name = "Date of Birth")]
+        [DataType(DataType.Date)]
+        public DateTime DateOfBirth { get; set; }
+
+        [Display(Name = "Admission Number")]
+        public string AdmissionNumber { get; set; } = string.Empty;
+
+        [Display(Name = "Enrollment Date")]
+        public DateTime EnrollmentDate { get; set; } = DateTime.Now;
+
+        [Display(Name = "Photo")]
+        public string? PhotoPath { get; set; }
+
+        public string Gender { get; set; } = "Male";
+
+        [MaxLength(300)]
+        public string? Address { get; set; }
+
+        public bool IsActive { get; set; } = true;
+
+        // FK
+        public int CourseId { get; set; }
+        public Course? Course { get; set; }
+
+        // Navigation
+        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+        public ICollection<Grade> Grades { get; set; } = new List<Grade>();
+        public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
+        public ICollection<FeePayment> FeePayments { get; set; } = new List<FeePayment>();
+
+        // Computed
+        public string FullName => $"{FirstName} {LastName}";
+        public int Age => DateTime.Now.Year - DateOfBirth.Year;
+    }
 }
