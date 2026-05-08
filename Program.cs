@@ -13,6 +13,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Program.cs
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 app.UseHttpsRedirection();
 app.UseRouting();
 
